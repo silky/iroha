@@ -38,48 +38,41 @@ namespace iroha {
     namespace converters {
 
       JsonCommandFactory::JsonCommandFactory() {
-        serializers_[typeid(AddAssetQuantity)] =
-            &JsonCommandFactory::serializeAddAssetQuantity;
-        serializers_[typeid(AddPeer)] = &JsonCommandFactory::serializeAddPeer;
-        serializers_[typeid(AddSignatory)] =
-            &JsonCommandFactory::serializeAddSignatory;
-        serializers_[typeid(AssignMasterKey)] =
-            &JsonCommandFactory::serializeAssignMasterKey;
-        serializers_[typeid(CreateAccount)] =
-            &JsonCommandFactory::serializeCreateAccount;
-        serializers_[typeid(CreateAsset)] =
-            &JsonCommandFactory::serializeCreateAsset;
-        serializers_[typeid(CreateDomain)] =
-            &JsonCommandFactory::serializeCreateDomain;
-        serializers_[typeid(RemoveSignatory)] =
-            &JsonCommandFactory::serializeRemoveSignatory;
-        serializers_[typeid(SetAccountPermissions)] =
-            &JsonCommandFactory::serializeSetAccountPermissions;
-        serializers_[typeid(SetQuorum)] =
-            &JsonCommandFactory::serializeSetQuorum;
-        serializers_[typeid(TransferAsset)] =
-            &JsonCommandFactory::serializeTransferAsset;
+        serializers_ = {
+            {typeid(AddAssetQuantity),
+             &JsonCommandFactory::serializeAddAssetQuantity},
+            {typeid(AddPeer), &JsonCommandFactory::serializeAddPeer},
+            {typeid(AddSignatory), &JsonCommandFactory::serializeAddSignatory},
+            {typeid(AssignMasterKey),
+             &JsonCommandFactory::serializeAssignMasterKey},
+            {typeid(CreateAccount),
+             &JsonCommandFactory::serializeCreateAccount},
+            {typeid(CreateAsset), &JsonCommandFactory::serializeCreateAsset},
+            {typeid(CreateDomain), &JsonCommandFactory::serializeCreateDomain},
+            {typeid(RemoveSignatory),
+             &JsonCommandFactory::serializeRemoveSignatory},
+            {typeid(SetAccountPermissions),
+             &JsonCommandFactory::serializeSetAccountPermissions},
+            {typeid(SetQuorum), &JsonCommandFactory::serializeSetQuorum},
+            {typeid(TransferAsset),
+             &JsonCommandFactory::serializeTransferAsset}};
 
-        deserializers_["AddAssetQuantity"] =
-            &JsonCommandFactory::deserializeAddAssetQuantity;
-        deserializers_["AddPeer"] = &JsonCommandFactory::deserializeAddPeer;
-        deserializers_["AddSignatory"] =
-            &JsonCommandFactory::deserializeAddSignatory;
-        deserializers_["AssignMasterKey"] =
-            &JsonCommandFactory::deserializeAssignMasterKey;
-        deserializers_["CreateAccount"] =
-            &JsonCommandFactory::deserializeCreateAccount;
-        deserializers_["CreateAsset"] =
-            &JsonCommandFactory::deserializeCreateAsset;
-        deserializers_["CreateDomain"] =
-            &JsonCommandFactory::deserializeCreateDomain;
-        deserializers_["RemoveSignatory"] =
-            &JsonCommandFactory::deserializeRemoveSignatory;
-        deserializers_["SetAccountPermissions"] =
-            &JsonCommandFactory::deserializeSetAccountPermissions;
-        deserializers_["SetQuorum"] = &JsonCommandFactory::deserializeSetQuorum;
-        deserializers_["TransferAsset"] =
-            &JsonCommandFactory::deserializeTransferAsset;
+        deserializers_ = {
+            {"AddAssetQuantity",
+             &JsonCommandFactory::deserializeAddAssetQuantity},
+            {"AddPeer", &JsonCommandFactory::deserializeAddPeer},
+            {"AddSignatory", &JsonCommandFactory::deserializeAddSignatory},
+            {"AssignMasterKey",
+             &JsonCommandFactory::deserializeAssignMasterKey},
+            {"CreateAccount", &JsonCommandFactory::deserializeCreateAccount},
+            {"CreateAsset", &JsonCommandFactory::deserializeCreateAsset},
+            {"CreateDomain", &JsonCommandFactory::deserializeCreateDomain},
+            {"RemoveSignatory",
+             &JsonCommandFactory::deserializeRemoveSignatory},
+            {"SetAccountPermissions",
+             &JsonCommandFactory::deserializeSetAccountPermissions},
+            {"SetQuorum", &JsonCommandFactory::deserializeSetQuorum},
+            {"TransferAsset", &JsonCommandFactory::deserializeTransferAsset}};
       }
 
       // AddAssetQuantity
@@ -115,8 +108,7 @@ namespace iroha {
         return make_optional_ptr<AddAssetQuantity>() |
                des.String(&AddAssetQuantity::account_id, "account_id") |
                des.String(&AddAssetQuantity::asset_id, "asset_id") |
-               des.Object(&AddAssetQuantity::amount, "amount") |
-               transform;
+               des.Object(&AddAssetQuantity::amount, "amount") | transform;
       }
 
       // AddPeer
@@ -141,8 +133,7 @@ namespace iroha {
         auto des = makeFieldDeserializer(document);
         return make_optional_ptr<AddPeer>() |
                des.String(&AddPeer::peer_key, "peer_key") |
-               des.String(&AddPeer::address, "address") |
-               transform;
+               des.String(&AddPeer::address, "address") | transform;
       }
 
       // AddSignatory
@@ -167,8 +158,7 @@ namespace iroha {
         auto des = makeFieldDeserializer(document);
         return make_optional_ptr<AddSignatory>() |
                des.String(&AddSignatory::account_id, "account_id") |
-               des.String(&AddSignatory::pubkey, "pubkey") |
-               transform;
+               des.String(&AddSignatory::pubkey, "pubkey") | transform;
       }
 
       // AssignMasterKey
@@ -194,8 +184,7 @@ namespace iroha {
         auto des = makeFieldDeserializer(document);
         return make_optional_ptr<AssignMasterKey>() |
                des.String(&AssignMasterKey::account_id, "account_id") |
-               des.String(&AssignMasterKey::pubkey, "pubkey") |
-               transform;
+               des.String(&AssignMasterKey::pubkey, "pubkey") | transform;
       }
 
       // CreateAccount
@@ -223,8 +212,7 @@ namespace iroha {
         return make_optional_ptr<CreateAccount>() |
                des.String(&CreateAccount::account_name, "account_name") |
                des.String(&CreateAccount::domain_id, "domain_id") |
-               des.String(&CreateAccount::pubkey, "pubkey") |
-               transform;
+               des.String(&CreateAccount::pubkey, "pubkey") | transform;
       }
 
       // CreateAsset
@@ -250,8 +238,7 @@ namespace iroha {
         return make_optional_ptr<CreateAsset>() |
                des.String(&CreateAsset::asset_name, "asset_name") |
                des.String(&CreateAsset::domain_id, "domain_id") |
-               des.Uint(&CreateAsset::precision, "precision") |
-               transform;
+               des.Uint(&CreateAsset::precision, "precision") | transform;
       }
 
       // CreateDomain
@@ -301,8 +288,7 @@ namespace iroha {
         auto des = makeFieldDeserializer(document);
         return make_optional_ptr<RemoveSignatory>() |
                des.String(&RemoveSignatory::account_id, "account_id") |
-               des.String(&RemoveSignatory::pubkey, "pubkey") |
-               transform;
+               des.String(&RemoveSignatory::pubkey, "pubkey") | transform;
       }
 
       // SetAccountPermissions
@@ -393,8 +379,7 @@ namespace iroha {
         auto des = makeFieldDeserializer(document);
         return make_optional_ptr<SetQuorum>() |
                des.String(&SetQuorum::account_id, "account_id") |
-               des.Uint(&SetQuorum::new_quorum, "new_quorum") |
-               transform;
+               des.Uint(&SetQuorum::new_quorum, "new_quorum") | transform;
       }
 
       // TransferAsset
@@ -432,28 +417,19 @@ namespace iroha {
                des.String(&TransferAsset::src_account_id, "src_account_id") |
                des.String(&TransferAsset::dest_account_id, "dest_account_id") |
                des.String(&TransferAsset::asset_id, "asset_id") |
-               des.Object(&TransferAsset::amount, "amount") |
-               transform;
+               des.Object(&TransferAsset::amount, "amount") | transform;
       }
 
       // Abstract
       Document JsonCommandFactory::serializeAbstractCommand(
           std::shared_ptr<Command> command) {
-        return (this->*serializers_.at(typeid(*command)))(command);
+        return makeInvoker(*this, command)(serializers_.at(typeid(*command)));
       }
 
       optional_ptr<model::Command>
       JsonCommandFactory::deserializeAbstractCommand(const Value &document) {
-        auto des = makeFieldDeserializer(document);
-        return des.String("command_type") |
-                   [this, &document](
-                       auto command_type) -> optional_ptr<model::Command> {
-          auto it = deserializers_.find(command_type);
-          if (it != deserializers_.end()) {
-            return (this->*deserializers_.at(command_type))(document);
-          }
-          return nonstd::nullopt;
-        };
+        return makeFieldDeserializer(document).String("command_type") |
+               makeMap(deserializers_) | makeInvoker(*this, document);
       }
     }  // namespace converters
   }    // namespace model
